@@ -1,0 +1,40 @@
+---
+title: Configuration
+description: Load environment-aware YAML configuration without committing secrets.
+order: 6
+section: Runtime
+---
+
+## Configuration files
+
+A typical Gorix application can load a base YAML file and overlay environment-specific values.
+
+```yaml
+app:
+  name: user-service
+  environment: development
+
+server:
+  host: 0.0.0.0
+  port: 8080
+
+framework:
+  validate_structure: true
+```
+
+## Environment variables
+
+Secrets and deployment-specific values should come from environment variables or a secret manager. Never commit database passwords, signing keys, or cloud credentials.
+
+```bash
+export DATABASE_URL='postgres://...'
+export APP_ENV='production'
+```
+
+## Production profile
+
+The production profile can disable expensive development checks while enabling stricter transport security, structured logging, and production observability.
+
+<Callout title="Configuration precedence">
+Document a deterministic precedence order, such as defaults → YAML → environment variables → command-line flags.
+</Callout>

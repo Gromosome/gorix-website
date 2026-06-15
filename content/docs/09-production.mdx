@@ -1,0 +1,48 @@
+---
+title: Production Guide
+description: Prepare Gorix services for secure deployment, observability, and graceful operation.
+order: 9
+section: Operations
+---
+
+## Graceful shutdown
+
+Stop accepting new traffic, allow in-flight requests to complete within a deadline, and close database and broker connections cleanly.
+
+## Health endpoints
+
+Expose separate endpoints for process liveness and dependency readiness. A service can be alive while temporarily unable to receive production traffic.
+
+```text
+/health/live   → process is running
+/health/ready  → required dependencies are available
+```
+
+## Observability
+
+Production services should emit structured logs, request metrics, traces, and correlation identifiers. Avoid placing credentials or personal data in telemetry.
+
+## Security checklist
+
+- enforce TLS at the edge;
+- validate all externally controlled input;
+- use least-privilege credentials;
+- set request, header, and body limits;
+- apply timeouts to network and database operations;
+- keep dependencies and container images patched;
+- return safe public errors while logging internal context securely.
+
+## Deployment
+
+Build a small, reproducible container image and run the service as a non-root user. Use immutable release versions and keep runtime configuration outside the image.
+
+```dockerfile
+FROM golang:1.24-alpine AS build
+WORKDIR /src
+COPY . .
+RUN CGO_ENABLED=0 go build -trimpath -o /out/app .
+
+FROM gcr.io/distroless/static-debian12:nonroot
+COPY --from=build /out/app /app
+ENTRYPOINT ["/app"]
+```

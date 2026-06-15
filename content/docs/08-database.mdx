@@ -1,0 +1,50 @@
+---
+title: Database and Drivers
+description: Use database/sql through driver wrappers and normalize provider-specific errors.
+order: 8
+section: Infrastructure
+---
+
+## Native SQL foundation
+
+Go's `database/sql` package provides connection pooling and a common database API. A concrete driver still supplies the wire protocol and provider-specific behavior.
+
+Gorix can keep the application-facing database layer stable while driver wrappers adapt PostgreSQL, MySQL, SQL Server, Oracle, and SQLite implementations.
+
+## Driver selection
+
+Configuration can select a registered driver by name:
+
+```yaml
+database:
+  default:
+    driver: postgres
+    dsn: ${DATABASE_URL}
+    max_open_connections: 30
+    max_idle_connections: 10
+```
+
+## Normalized errors
+
+Provider error codes should be mapped into framework-level categories rather than parsed from human-readable messages.
+
+```go
+type ErrorKind string
+
+const (
+    ErrorDuplicateKey    ErrorKind = "duplicate_key"
+    ErrorForeignKey      ErrorKind = "foreign_key_violation"
+    ErrorNotNull         ErrorKind = "not_null_violation"
+    ErrorDeadlock        ErrorKind = "deadlock"
+    ErrorTimeout         ErrorKind = "timeout"
+    ErrorConnection      ErrorKind = "connection_error"
+)
+```
+
+## Repository boundary
+
+Repositories should expose domain-focused interfaces while accepting `context.Context` for cancellation, deadlines, and tracing.
+
+<Callout type="warning" title="Do not pre-check uniqueness">
+Avoid querying for a key before every insert. Let the database enforce constraints atomically, then map the driver error into a stable Gorix error kind.
+</Callout>

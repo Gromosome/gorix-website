@@ -1,0 +1,14 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Bug reports are written only by the authenticated Next.js server route
+    // through the Firebase Admin SDK. Client SDK access is denied.
+    match /bugReports/{reportId} {
+      allow read, write: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

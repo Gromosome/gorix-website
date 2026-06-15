@@ -1,0 +1,48 @@
+---
+title: Core Concepts
+description: Learn the module, controller, service, and dependency boundaries used by Gorix applications.
+order: 3
+section: Fundamentals
+---
+
+## Modules
+
+A module is the boundary of a feature. It groups controllers, services, infrastructure providers, and configuration that belong together.
+
+Good module boundaries are based on business capability rather than technical type. Prefer `PaymentModule` or `IdentityModule` over a global `ControllersModule`.
+
+## Controllers
+
+Controllers translate transport-level input into application calls. Their responsibilities should remain small:
+
+- declare method and path metadata;
+- bind path, query, header, and body values;
+- validate incoming data;
+- call a service;
+- map the result to an HTTP response.
+
+## Services
+
+Services contain application behavior and orchestrate domain operations. They should not depend directly on HTTP request or response objects.
+
+```go
+type UserService struct {
+    repository UserRepository
+}
+
+func (s *UserService) FindByID(ctx context.Context, id string) (*User, error) {
+    return s.repository.FindByID(ctx, id)
+}
+```
+
+## Dependency boundaries
+
+Depend on narrow interfaces close to the consumer. Infrastructure packages can implement those interfaces and be registered by the module.
+
+<Callout type="success" title="Practical rule">
+Controllers know about HTTP. Services know about use cases. Repositories know about persistence. Domain objects should know as little as possible about all three.
+</Callout>
+
+## Application bootstrap
+
+The root application registers modules, validates framework conventions, loads configuration, and starts the HTTP server. Production mode may disable development-only structure validation to reduce startup work.

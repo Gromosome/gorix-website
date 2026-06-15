@@ -1,0 +1,255 @@
+{
+  "site": {
+    "name": "Gorix",
+    "description": "An open-source Go framework for APIs, microservices, fintech, AI systems, and production infrastructure.",
+    "repositoryUrl": "https://github.com/Gromosome/gorix",
+    "packageUrl": "https://pkg.go.dev/github.com/Gromosome/gorix/gorix",
+    "gromosomeUrl": "https://gromosome.com",
+    "openCollectiveUrl": "https://opencollective.com/gorix",
+    "logo": {
+      "src": "/main/img/logos/gromo-framework/Gorix.png",
+      "alt": "Gorix logo"
+    }
+  },
+  "layout": {
+    "metadata": {
+      "title": "Gorix — Production-grade Go framework",
+      "titleTemplate": "%s | Gorix",
+      "description": "An open-source Go framework for APIs, microservices, fintech, AI systems, and production infrastructure.",
+      "keywords": ["Gorix", "Go framework", "Golang", "microservices", "API framework", "fintech", "AI infrastructure"],
+      "openGraphImage": {
+        "src": "/gorix/img/slide-show/slide-1.png",
+        "alt": "Gorix framework",
+        "width": 1672,
+        "height": 941
+      }
+    },
+    "navigation": [
+      { "href": "/", "label": "Home" },
+      { "href": "/documentation", "label": "Documentation" },
+      { "href": "/bug-report", "label": "Bug Report" },
+      { "href": "/enterprise-support", "label": "Enterprise" },
+      { "href": "/code-challenge", "label": "Challenge" }
+    ],
+    "header": {
+      "brandAriaLabel": "Gorix home",
+      "repositoryAriaLabel": "Gorix GitHub repository",
+      "packageLabel": "Go Package",
+      "mobileRepositoryLabel": "GitHub repository",
+      "mobilePackageLabel": "pkg.go.dev",
+      "menuAriaLabel": "Toggle navigation"
+    },
+    "footer": {
+      "copy": "Open-source infrastructure for building production-grade Go systems.",
+      "groups": [
+        {
+          "title": "Framework",
+          "links": [
+            { "label": "Documentation", "href": "/documentation" },
+            { "label": "Bug Report", "href": "/bug-report" }
+          ]
+        },
+        {
+          "title": "Resources",
+          "links": [
+            { "label": "GitHub", "href": "site.repositoryUrl" },
+            { "label": "Go Package", "href": "site.packageUrl" }
+          ]
+        },
+        {
+          "title": "Gromosome",
+          "links": [
+            { "label": "Company", "href": "site.gromosomeUrl" },
+            { "label": "Open Collective", "href": "site.openCollectiveUrl" }
+          ]
+        }
+      ],
+      "bottom": {
+        "copyright": "© {year} Gromosome. Gorix is open source.",
+        "tagline": "Built for APIs, microservices, fintech and AI systems."
+      }
+    }
+  },
+  "pages": {
+    "home": {
+      "page": {
+        "title": "Gorix | Home Page",
+        "description": "Build production-grade Go APIs, microservices, fintech platforms, AI systems, and infrastructure with Gorix."
+      },
+      "sections": [
+        {
+          "component": "hero",
+          "eyebrow": "Open source · Go native · Production focused",
+          "title": "Build",
+          "highlight": "Beyond",
+          "lead": "Gorix is an open-source Go framework for APIs, microservices, fintech platforms, AI systems and production infrastructure.",
+          "primaryAction": { "label": "Read documentation", "href": "/documentation" },
+          "secondaryAction": { "label": "Source code", "href": "site.repositoryUrl" },
+          "packageLink": { "label": "github.com/Gromosome/gorix/gorix", "href": "site.packageUrl" },
+          "terminal": {
+            "title": "main.go",
+            "ariaLabel": "Illustrative Gorix application code",
+            "code": "package main\n\nimport \"github.com/Gromosome/gorix/gorix\"\n\nfunc main() {\n    app := gorix.New()\n\n    app.RegisterModules(\n        UserModule(),\n        PaymentModule(),\n    )\n\n    app.Listen()\n}",
+            "status": "gorix server listening on :8080"
+          }
+        },
+        {
+          "component": "slideShow",
+          "kicker": "Framework overview",
+          "title": "A strong foundation for the whole production journey.",
+          "description": "Keep application code structured while Gorix provides conventions for routing, modules, validation, configuration and infrastructure integration.",
+          "images": [
+            { "src": "/gorix/img/slide-show/slide-1.png", "alt": "Gorix framework architecture and registered route visualization" },
+            { "src": "/gorix/img/slide-show/slide-2.png", "alt": "Gorix framework performance and observability dashboard visualization" }
+          ]
+        },
+        {
+          "component": "features",
+          "kicker": "Why Gorix",
+          "title": "Simple enough to start.\nStructured enough to scale.",
+          "items": [
+            { "icon": "layers", "title": "Modular by design", "copy": "Compose isolated modules, controllers and services without turning your application into a tightly coupled monolith." },
+            { "icon": "gauge", "title": "Performance-minded", "copy": "A Go-native foundation designed for predictable latency, efficient resource use and production observability." },
+            { "icon": "boxes", "title": "Microservice ready", "copy": "Build APIs and distributed services around clear boundaries, configuration profiles and pluggable infrastructure." },
+            { "icon": "shield", "title": "Secure defaults", "copy": "Structured validation, controlled configuration and explicit framework conventions reduce avoidable production risk." },
+            { "icon": "terminal", "title": "Developer experience", "copy": "Readable project structure, focused APIs and documentation that keep teams productive as systems grow." }
+          ]
+        },
+        {
+          "component": "architecture",
+          "kicker": "Framework architecture",
+          "title": "Clear boundaries from transport to infrastructure.",
+          "copy": "Gorix promotes explicit modules and focused layers so business logic remains testable, reusable and independent from delivery mechanisms.",
+          "link": { "label": "Explore core concepts", "href": "/documentation/core-concepts" },
+          "layers": [
+            { "title": "Controllers", "copy": "HTTP transport and request binding" },
+            { "title": "Services", "copy": "Application orchestration and domain behavior" },
+            { "title": "Modules", "copy": "Dependency registration and feature boundaries" },
+            { "title": "Infrastructure", "copy": "Database, messaging, configuration and plugins" }
+          ]
+        },
+        {
+          "component": "cta",
+          "kicker": "Start building",
+          "title": "Take Gorix from repository to running service.",
+          "copy": "Read the setup guide, inspect the source, and help shape the framework through verified bug reports.",
+          "primaryAction": { "label": "Get started", "href": "/documentation/getting-started" },
+          "secondaryAction": { "label": "Report a bug", "href": "/bug-report" }
+        }
+      ]
+    },
+    "bugReport": {
+      "page": {
+        "title": "Bug Report",
+        "description": "Submit a verified bug report to the Gorix maintainers."
+      },
+      "hero": {
+        "kicker": "Gorix issue reporting",
+        "title": "Report a framework bug.",
+        "description": "Verify your email, provide a reproducible case, and give maintainers the technical context needed to investigate quickly."
+      }
+    },
+    "enterpriseSupport": {
+      "page": {
+        "title": "Enterprise Support",
+        "description": "Request verified enterprise support for Gorix."
+      },
+      "hero": {
+        "kicker": "Enterprise support",
+        "title": "Get Gorix support for your company.",
+        "description": "Verify your email, send company details, and share the contact number the team should use for follow-up."
+      },
+      "about": {
+        "kicker": "Gromosome enterprise",
+        "title": "Build production systems with Gorix and Gromosome.",
+        "description": "Gromosome builds open-source and enterprise-grade infrastructure for modern software teams. Gorix is part of that ecosystem: a Go-native framework focused on clear application structure, production readiness, and scalable backend development.",
+        "action": {
+          "label": "Connect with Gromosome",
+          "href": "https://gromosome.com/connect/"
+        }
+      }
+    },
+    "codeChallenge": {
+      "page": {
+        "title": "Code Challenge",
+        "description": "Submit an innovative public GitHub project built with Gorix."
+      },
+      "hero": {
+        "kicker": "Code challenge",
+        "title": "Share an innovative Gorix project.",
+        "description": "Submit a public GitHub repository after Firebase email verification. Approved projects appear on the leaderboard by Firestore score."
+      }
+    }
+  },
+  "forms": {
+    "shared": {
+      "loadingVerification": "Checking verification…",
+      "configurationTitle": "Firebase setup required",
+      "configurationHelp": "Copy .env.example to .env.local and add your Firebase configuration.",
+      "githubAuthenticated": "GitHub authenticated",
+      "referenceLabel": "Reference:",
+      "requiredNotice": "Required fields are marked. Reports are stored securely through the server API."
+    },
+    "githubOAuth": {
+      "title": "Sign in with GitHub to continue.",
+      "signInLabel": "Continue with GitHub",
+      "signingInLabel": "Connecting…",
+      "errorMessage": "Unable to sign in with GitHub.",
+      "footnote": "GitHub OAuth helps verify project ownership context and reduce spam.",
+      "useAnotherAccount": "Use another GitHub account",
+      "githubAccountFallback": "GitHub account"
+    },
+    "staticExport": {
+      "title": "Submissions are unavailable on GitHub Pages.",
+      "description": "This page is deployed as a static site. Bug reports and challenge submissions require the Next.js API backend, so use the full application deployment for this workflow."
+    },
+    "bugReport": {
+      "accountLabel": "Reporting as",
+      "oauthKicker": "GitHub OAuth required",
+      "oauthDescription": "Sign in with GitHub before submitting a reproducible Gorix framework bug.",
+      "successTitle": "Report received.",
+      "successMessage": "Your bug report was submitted to the Gorix maintainers.",
+      "submitError": "The report could not be submitted.",
+      "authError": "GitHub authentication is required.",
+      "issuesLinkLabel": "View repository issues",
+      "sections": [
+        { "number": "01", "title": "Issue classification", "description": "Help maintainers triage the report correctly." },
+        { "number": "02", "title": "Environment", "description": "Version and platform details are required." },
+        { "number": "03", "title": "Behavior", "description": "Provide enough detail for another engineer to reproduce it." },
+        { "number": "04", "title": "Technical evidence", "description": "Optional, but strongly recommended." }
+      ],
+      "consent": "I confirm this report does not contain secrets or personal data and the maintainers may review it with my authenticated GitHub account.",
+      "submitIdle": "Submit bug report",
+      "submitBusy": "Submitting…"
+    },
+    "codeChallenge": {
+      "accountLabel": "Submitting project as",
+      "oauthKicker": "GitHub OAuth required",
+      "oauthDescription": "Sign in with GitHub before submitting a public repository that uses Gorix in an innovative project.",
+      "successTitle": "Project submitted.",
+      "successMessage": "Your project was submitted. It will be listed after our team verification",
+      "submitError": "The project could not be submitted.",
+      "authError": "GitHub authentication is required.",
+      "submitNotice": "The Submissions will be verified by the Gorix team.",
+      "consent": "I confirm this is a public GitHub repository and the Gorix team may review it with my authenticated GitHub account before listing.",
+      "submitIdle": "Submit project",
+      "submitBusy": "Submitting…",
+      "projects": {
+        "kicker": "Verified projects",
+        "title": "Code challenge leaderboard.",
+        "description": "The verified projects by the Gorix team.",
+        "loading": "Loading verified projects…",
+        "loadError": "Projects could not be loaded.",
+        "emptyTitle": "No verified projects yet.",
+        "emptyDescription": "After approval by the Gorix team, your projects will appear here.",
+        "scoreLabel": "Score",
+        "usageLabel": "Gorix usage",
+        "repositoryLabel": "Repository",
+        "demoLabel": "Demo",
+        "previousLabel": "Previous",
+        "nextLabel": "Next",
+        "pageLabel": "Page {page}"
+      }
+    }
+  }
+}

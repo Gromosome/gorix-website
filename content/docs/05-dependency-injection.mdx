@@ -1,0 +1,43 @@
+---
+title: Dependency Injection
+description: Register providers by module and keep framework wiring separate from business logic.
+order: 5
+section: Fundamentals
+---
+
+## Provider registration
+
+Dependency injection connects interfaces to concrete providers during application bootstrap. Each module should register only the dependencies required by its feature.
+
+```go
+type UserModule struct {
+    Controller *UserController
+    Service    *UserService
+}
+```
+
+## Constructor injection
+
+Prefer constructor injection because it makes dependencies visible and keeps objects valid after creation.
+
+```go
+func NewUserService(repository UserRepository) *UserService {
+    return &UserService{repository: repository}
+}
+```
+
+## Provider lifetime
+
+Common lifetimes include:
+
+- **singleton** for stateless services, database pools, and clients;
+- **request scoped** for request-specific state;
+- **transient** for objects that must be recreated for every resolution.
+
+<Callout type="warning" title="Avoid service location">
+Do not pass a global container into business services. Resolve dependencies at the framework boundary and inject the exact interfaces each service needs.
+</Callout>
+
+## Circular dependencies
+
+Circular dependencies usually indicate that feature boundaries are unclear. Extract shared behavior into a smaller service or introduce an event boundary instead of relying on container workarounds.

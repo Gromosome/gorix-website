@@ -1,0 +1,44 @@
+---
+title: Routing
+description: Define static, parameterized, and grouped HTTP routes with predictable priority.
+order: 4
+section: HTTP
+---
+
+## Route definition
+
+Gorix controllers associate a handler with an HTTP method and path. Modules can provide a base path so related routes remain grouped.
+
+```text
+/users                 GET     List users
+/users                 POST    Create a user
+/users/summary         GET     Static summary
+/users/:id             GET     Parameterized lookup
+```
+
+## Route priority
+
+Static path segments should outrank parameter segments. For example, `/users/summary` must be evaluated before `/users/:id`, even when the parameterized route was registered first.
+
+A simple score can give static segments a higher weight:
+
+```text
+/users/summary  → 10 + 10 = 20
+/users/:id      → 10 +  1 = 11
+```
+
+This avoids accidentally interpreting `summary` as an ID.
+
+## Request binding
+
+Use context binding helpers to populate typed input structures from the request body, query string, or path parameters. Validation should run immediately after binding so controllers receive a consistent error shape.
+
+```go
+type FindUserParams struct {
+    ID string `param:"id" validate:"required"`
+}
+```
+
+## Response helpers
+
+A framework context can expose helpers for JSON, XML, text, files, downloads, templates, and streams. Handlers should set status and headers explicitly when the default `200 OK` is not correct.

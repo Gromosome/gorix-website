@@ -1,0 +1,37 @@
+---
+title: Introduction
+description: Understand what Gorix is, the problems it targets, and how the framework is organized.
+order: 1
+section: Overview
+---
+
+## What is Gorix?
+
+Gorix is an open-source framework for building Go applications with clear production conventions. It is intended for HTTP APIs, microservices, fintech workloads, AI-enabled services, and the infrastructure around them.
+
+The framework focuses on giving teams a consistent way to define modules, controllers, services, configuration, request validation, and infrastructure integrations while preserving the performance and simplicity expected from Go.
+
+<Callout title="Project status">
+Gorix is actively evolving. Confirm public APIs against the current tagged release and the [Go package documentation](https://pkg.go.dev/github.com/Gromosome/gorix/gorix).
+</Callout>
+
+## Design goals
+
+- **Explicit structure** — application boundaries should be visible in the codebase.
+- **Composable modules** — features can be registered, tested, and replaced independently.
+- **Production readiness** — validation, configuration, database access, messaging, security, and observability are first-class concerns.
+- **Go-native behavior** — conventions should help without hiding the language or runtime.
+- **Extensibility** — drivers and plugins can evolve without coupling applications to one provider.
+
+## Typical application flow
+
+A request enters through the router, is bound and validated in a controller, then delegates to a service. The service coordinates domain logic and infrastructure dependencies registered by its module.
+
+```text
+HTTP request → Router → Controller → Service → Repository / Broker / External API
+```
+
+## Repository and package
+
+- [GitHub repository](https://github.com/Gromosome/gorix)
+- [Go package documentation](https://pkg.go.dev/github.com/Gromosome/gorix/gorix)

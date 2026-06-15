@@ -1,0 +1,44 @@
+---
+title: Validation
+description: Bind typed request data and return consistent validation failures.
+order: 7
+section: HTTP
+---
+
+## Body binding
+
+Bind JSON request bodies into a typed structure and validate them before application logic runs.
+
+```go
+type CreateUserRequest struct {
+    Name  string `json:"name" validate:"required,min=2"`
+    Email string `json:"email" validate:"required,email"`
+}
+
+var request CreateUserRequest
+if err := ctx.BindBody(&request); err != nil {
+    return err
+}
+```
+
+## Query and parameter binding
+
+Use separate structures for query strings and route parameters. This keeps transport contracts explicit and avoids mixing optional filters with domain objects.
+
+## Error shape
+
+A consistent validation response should include a stable error code and field-level details:
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Request validation failed",
+  "fields": {
+    "email": "must be a valid email address"
+  }
+}
+```
+
+## Safety considerations
+
+Limit request body size, reject unknown formats, and avoid returning raw internal errors. Validation protects the application boundary but does not replace authorization or domain rules.

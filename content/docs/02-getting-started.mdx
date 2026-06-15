@@ -1,0 +1,82 @@
+---
+title: Getting Started
+description: Create a Gorix application, register modules, and run the development server.
+order: 2
+section: Overview
+---
+
+## Prerequisites
+
+Install a supported Go toolchain and Git. Check your local versions:
+
+```bash
+go version
+git --version
+```
+
+## Create a project
+
+<Steps>
+
+### 1. Initialize the module
+
+```bash
+mkdir gorix-starter
+cd gorix-starter
+go mod init example.com/gorix-starter
+```
+
+### 2. Add Gorix
+
+```bash
+go get github.com/Gromosome/gorix/gorix@latest
+```
+
+### 3. Create the application entry point
+
+```go
+package main
+
+import "github.com/Gromosome/gorix/gorix"
+
+func main() {
+    app := gorix.New()
+
+    app.RegisterModules(
+        UserModule(),
+    )
+
+    app.Listen()
+}
+```
+
+### 4. Run the service
+
+```bash
+go run .
+```
+
+</Steps>
+
+<Callout type="warning" title="API compatibility">
+The example shows the intended application shape. Adjust constructor and registration calls to the API exposed by the Gorix version in your `go.mod` file.
+</Callout>
+
+## Suggested project structure
+
+```text
+gorix-starter/
+├── main.go
+├── go.mod
+├── config/
+│   └── application.yaml
+└── internal/
+    └── user/
+        ├── user.controller.go
+        ├── user.module.go
+        └── user.service.go
+```
+
+## Next steps
+
+Continue with [Core Concepts](/documentation/core-concepts) to understand how modules, controllers, and services work together.
