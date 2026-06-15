@@ -1,0 +1,4 @@
+User-Agent: *
+Allow: /
+
+Sitemap: https://Gromosome.github.io/gorix-website/sitemap.xml
