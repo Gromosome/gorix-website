@@ -5,6 +5,7 @@ import { type ReactNode, useEffect, useState } from "react";
 import { GithubIcon, ShieldIcon } from "@/components/Icons";
 import { content } from "@/lib/content";
 import { getFirebaseAuth } from "@/lib/firebase/client";
+import { getFirebaseErrorMessage } from "@/lib/firebase/errors";
 
 type GitHubOAuthPortalProps = {
   kicker: string;
@@ -52,7 +53,7 @@ export function GitHubOAuthPortal({ kicker, description, accountLabel, children 
       setState("idle");
     } catch (error) {
       setState("error");
-      setMessage(error instanceof Error ? error.message : content.forms.githubOAuth.errorMessage);
+      setMessage(getFirebaseErrorMessage(error, content.forms.githubOAuth.errorMessage));
     }
   }
 

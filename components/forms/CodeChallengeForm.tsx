@@ -7,6 +7,7 @@ import { CheckIcon, GithubIcon } from "@/components/Icons";
 import { content } from "@/lib/content";
 import { codeChallengeSchema, type CodeChallengeInput } from "@/lib/form-schemas";
 import { getFirebaseFirestore } from "@/lib/firebase/client";
+import { getFirebaseErrorMessage } from "@/lib/firebase/errors";
 
 const initialForm: Omit<CodeChallengeInput, "consent"> & { consent: boolean } = {
   projectName: "",
@@ -59,7 +60,7 @@ export function CodeChallengeForm({ user }: { user: User }) {
       setMessage(content.forms.codeChallenge.successMessage);
     } catch (error) {
       setState("error");
-      setMessage(error instanceof Error ? error.message : content.forms.codeChallenge.submitError);
+      setMessage(getFirebaseErrorMessage(error, content.forms.codeChallenge.submitError));
     }
   }
 

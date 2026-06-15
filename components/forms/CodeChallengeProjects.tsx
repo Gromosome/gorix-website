@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { ExternalLinkIcon, GithubIcon, PackageIcon } from "@/components/Icons";
 import { content, formatContentText } from "@/lib/content";
 import { getFirebaseFirestore } from "@/lib/firebase/client";
+import { getFirebaseErrorMessage } from "@/lib/firebase/errors";
 
 type ChallengeProject = {
   id: string;
@@ -62,7 +63,7 @@ export function CodeChallengeProjects() {
       } catch (error) {
         if (!cancelled) {
           setState("error");
-          setMessage(error instanceof Error ? error.message : content.forms.codeChallenge.projects.loadError);
+          setMessage(getFirebaseErrorMessage(error, content.forms.codeChallenge.projects.loadError));
         }
       }
     }

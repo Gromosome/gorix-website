@@ -8,6 +8,7 @@ import { bugReportSchema, type BugReportInput } from "@/lib/bug-report-schema";
 import { content } from "@/lib/content";
 import { siteConfig } from "@/lib/constants";
 import { getFirebaseFirestore } from "@/lib/firebase/client";
+import { getFirebaseErrorMessage } from "@/lib/firebase/errors";
 
 const initialForm: Omit<BugReportInput, "consent"> & { consent: boolean } = {
   title: "",
@@ -67,7 +68,7 @@ export function BugReportForm({ user }: { user: User }) {
       setMessage(content.forms.bugReport.successMessage);
     } catch (error) {
       setState("error");
-      setMessage(error instanceof Error ? error.message : content.forms.bugReport.submitError);
+      setMessage(getFirebaseErrorMessage(error, content.forms.bugReport.submitError));
     }
   }
 
