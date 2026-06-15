@@ -1,10 +1,45 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Bug reports are written only by the authenticated Next.js server route
-    // through the Firebase Admin SDK. Client SDK access is denied.
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isGitHubUser() {
+      return isSignedIn() && request.auth.token.firebase.sign_in_provider == 'github.com';
+    }
+
     match /bugReports/{reportId} {
-      allow read, write: if false;
+      allow create: if isGitHubUser()
+        && request.resource.data.reporterUid == request.auth.uid
+        && request.resource.data.reporterProvider == 'github.com'
+        && request.resource.data.status == 'new'
+        && request.resource.data.source == 'gorix-website'
+        && request.resource.data.consent == true
+        && request.resource.data.keys().hasOnly([
+          'title', 'category', 'severity', 'gorixVersion', 'goVersion', 'operatingSystem',
+          'affectedPackage', 'summary', 'stepsToReproduce', 'expectedBehavior', 'actualBehavior',
+          'reproducibility', 'codeSample', 'logs', 'consent', 'reporterUid', 'reporterEmail',
+          'reporterName', 'reporterProvider', 'status', 'source', 'createdAt', 'updatedAt'
+        ]);
+      allow read, update, delete: if false;
+    }
+
+    match /codeChallengeProjects/{projectId} {
+      allow read: if resource.data.verified == true;
+      allow create: if isGitHubUser()
+        && request.resource.data.submitterUid == request.auth.uid
+        && request.resource.data.submitterProvider == 'github.com'
+        && request.resource.data.verified == false
+        && request.resource.data.score == 0
+        && request.resource.data.source == 'gorix-website'
+        && request.resource.data.consent == true
+        && request.resource.data.keys().hasOnly([
+          'projectName', 'githubRepoUrl', 'projectDescription', 'gorixUsage', 'builderName',
+          'demoUrl', 'consent', 'submitterUid', 'submitterEmail', 'submitterName',
+          'submitterProvider', 'verified', 'score', 'source', 'createdAt', 'updatedAt'
+        ]);
+      allow update, delete: if false;
     }
 
     match /{document=**} {

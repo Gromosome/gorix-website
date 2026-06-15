@@ -199,10 +199,6 @@
       "useAnotherAccount": "Use another GitHub account",
       "githubAccountFallback": "GitHub account"
     },
-    "staticExport": {
-      "title": "Submissions are unavailable on GitHub Pages.",
-      "description": "This page is deployed as a static site. Bug reports and challenge submissions require the Next.js API backend, so use the full application deployment for this workflow."
-    },
     "bugReport": {
       "accountLabel": "Reporting as",
       "oauthKicker": "GitHub OAuth required",

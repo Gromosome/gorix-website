@@ -1,11 +1,13 @@
 "use client";
 
 import type { User } from "firebase/auth";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { type FormEvent, type ReactNode, useState } from "react";
 import { BugIcon, CheckIcon, ExternalLinkIcon } from "@/components/Icons";
-import type { BugReportInput } from "@/lib/bug-report-schema";
+import { bugReportSchema, type BugReportInput } from "@/lib/bug-report-schema";
 import { content } from "@/lib/content";
 import { siteConfig } from "@/lib/constants";
+import { getFirebaseFirestore } from "@/lib/firebase/client";
 
 const initialForm: Omit<BugReportInput, "consent"> & { consent: boolean } = {
   title: "",
@@ -44,15 +46,23 @@ export function BugReportForm({ user }: { user: User }) {
     setMessage("");
 
     try {
-      const token = await user.getIdToken(true);
-      const response = await fetch("/api/bug-reports", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-        body: JSON.stringify(form),
+      const parsed = bugReportSchema.safeParse(form);
+      if (!parsed.success) throw new Error(parsed.error.issues[0]?.message ?? content.forms.bugReport.submitError);
+      if (parsed.data.website) throw new Error(content.forms.bugReport.submitError);
+
+      const report = Object.fromEntries(Object.entries(parsed.data).filter(([key]) => key !== "website"));
+      const reference = await addDoc(collection(getFirebaseFirestore(), process.env.NEXT_PUBLIC_BUG_REPORT_COLLECTION ?? "bugReports"), {
+        ...report,
+        reporterUid: user.uid,
+        reporterEmail: user.email ?? "",
+        reporterName: user.displayName ?? "",
+        reporterProvider: "github.com",
+        status: "new",
+        source: "gorix-website",
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
       });
-      const result = (await response.json()) as { id?: string; error?: string };
-      if (!response.ok) throw new Error(result.error ?? content.forms.bugReport.submitError);
-      setReportId(result.id ?? "submitted");
+      setReportId(reference.id);
       setState("success");
       setMessage(content.forms.bugReport.successMessage);
     } catch (error) {

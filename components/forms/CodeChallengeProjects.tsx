@@ -1,8 +1,10 @@
 "use client";
 
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { ExternalLinkIcon, GithubIcon, PackageIcon } from "@/components/Icons";
 import { content, formatContentText } from "@/lib/content";
+import { getFirebaseFirestore } from "@/lib/firebase/client";
 
 type ChallengeProject = {
   id: string;
@@ -17,6 +19,19 @@ type ChallengeProject = {
 
 const pageSize = 6;
 
+function mapProject(id: string, data: Record<string, unknown>): ChallengeProject {
+  return {
+    id,
+    projectName: String(data.projectName ?? ""),
+    githubRepoUrl: String(data.githubRepoUrl ?? ""),
+    projectDescription: String(data.projectDescription ?? ""),
+    gorixUsage: String(data.gorixUsage ?? ""),
+    builderName: String(data.builderName ?? ""),
+    demoUrl: String(data.demoUrl ?? ""),
+    score: Number(data.score ?? 0),
+  };
+}
+
 export function CodeChallengeProjects() {
   const [projects, setProjects] = useState<ChallengeProject[]>([]);
   const [page, setPage] = useState(1);
@@ -30,12 +45,17 @@ export function CodeChallengeProjects() {
     async function loadProjects() {
       setState("loading");
       try {
-        const response = await fetch(`/api/code-challenges?page=${page}&pageSize=${pageSize}`);
-        const result = (await response.json()) as { projects?: ChallengeProject[]; hasNextPage?: boolean; error?: string };
-        if (!response.ok) throw new Error(result.error ?? content.forms.codeChallenge.projects.loadError);
+        const snapshot = await getDocs(query(
+          collection(getFirebaseFirestore(), process.env.NEXT_PUBLIC_CODE_CHALLENGE_COLLECTION ?? "codeChallengeProjects"),
+          where("verified", "==", true),
+        ));
+        const orderedProjects = snapshot.docs
+          .map((doc) => mapProject(doc.id, doc.data()))
+          .sort((first, second) => second.score - first.score || first.projectName.localeCompare(second.projectName));
+        const start = (page - 1) * pageSize;
         if (!cancelled) {
-          setProjects(result.projects ?? []);
-          setHasNextPage(Boolean(result.hasNextPage));
+          setProjects(orderedProjects.slice(start, start + pageSize));
+          setHasNextPage(orderedProjects.length > start + pageSize);
           setState("ready");
           setMessage("");
         }

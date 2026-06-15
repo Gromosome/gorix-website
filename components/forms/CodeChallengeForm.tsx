@@ -1,10 +1,12 @@
 "use client";
 
 import type { User } from "firebase/auth";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { type FormEvent, type ReactNode, useState } from "react";
 import { CheckIcon, GithubIcon } from "@/components/Icons";
 import { content } from "@/lib/content";
-import type { CodeChallengeInput } from "@/lib/form-schemas";
+import { codeChallengeSchema, type CodeChallengeInput } from "@/lib/form-schemas";
+import { getFirebaseFirestore } from "@/lib/firebase/client";
 
 const initialForm: Omit<CodeChallengeInput, "consent"> & { consent: boolean } = {
   projectName: "",
@@ -35,15 +37,24 @@ export function CodeChallengeForm({ user }: { user: User }) {
     setMessage("");
 
     try {
-      const token = await user.getIdToken(true);
-      const response = await fetch("/api/code-challenges", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-        body: JSON.stringify(form),
+      const parsed = codeChallengeSchema.safeParse(form);
+      if (!parsed.success) throw new Error(parsed.error.issues[0]?.message ?? content.forms.codeChallenge.submitError);
+      if (parsed.data.website) throw new Error(content.forms.codeChallenge.submitError);
+
+      const requestBody = Object.fromEntries(Object.entries(parsed.data).filter(([key]) => key !== "website"));
+      const reference = await addDoc(collection(getFirebaseFirestore(), process.env.NEXT_PUBLIC_CODE_CHALLENGE_COLLECTION ?? "codeChallengeProjects"), {
+        ...requestBody,
+        submitterUid: user.uid,
+        submitterEmail: user.email ?? "",
+        submitterName: user.displayName ?? "",
+        submitterProvider: "github.com",
+        verified: false,
+        score: 0,
+        source: "gorix-website",
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
       });
-      const result = (await response.json()) as { id?: string; error?: string };
-      if (!response.ok) throw new Error(result.error ?? content.forms.codeChallenge.submitError);
-      setSubmissionId(result.id ?? "submitted");
+      setSubmissionId(reference.id);
       setState("success");
       setMessage(content.forms.codeChallenge.successMessage);
     } catch (error) {
