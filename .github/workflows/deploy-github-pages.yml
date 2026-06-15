@@ -8,7 +8,9 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
 
 concurrency:
   group: github-pages
@@ -28,6 +30,9 @@ jobs:
         with:
           node-version: 20
           cache: npm
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v6
 
       - name: Install dependencies
         run: npm ci
@@ -90,16 +95,11 @@ jobs:
       - name: Disable Jekyll processing
         run: touch out/.nojekyll
 
-      - name: Publish to gh-pages branch
-        shell: bash
-        run: |
-          cd out
-          git init
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git checkout -b gh-pages
-          git add -A
-          git commit -m "Deploy GitHub Pages"
-          git push --force "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" gh-pages
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: out
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

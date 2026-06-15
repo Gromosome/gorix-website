@@ -177,7 +177,7 @@
       "hero": {
         "kicker": "Code challenge",
         "title": "Share an innovative Gorix project.",
-        "description": "Submit a public GitHub repository after Firebase email verification. Approved projects appear on the leaderboard by Firestore score."
+        "description": "Submit a public GitHub repository after Firebase GitHub sign-in. Approved projects appear on the leaderboard by Firestore score."
       }
     }
   },
