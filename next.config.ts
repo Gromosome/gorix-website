@@ -15,8 +15,8 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   devIndicators: false,
-  output: "export",
-  trailingSlash: true,
+  output: isGithubPagesBuild ? "export" : undefined,
+  trailingSlash: isGithubPagesBuild,
   images: {
     unoptimized: isGithubPagesBuild,
     remotePatterns: [
