@@ -17,6 +17,8 @@ const nextConfig: NextConfig = {
   devIndicators: false,
   output: isGithubPagesBuild ? "export" : undefined,
   trailingSlash: isGithubPagesBuild,
+  basePath: isGithubPagesBuild && basePath ? basePath : undefined,
+  assetPrefix: isGithubPagesBuild && basePath ? basePath : undefined,
   images: {
     unoptimized: isGithubPagesBuild,
     remotePatterns: [
