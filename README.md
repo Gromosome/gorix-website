@@ -105,11 +105,11 @@ If production sign-in still fails with `auth/unauthorized-domain`, the GitHub Ac
 For GitHub Pages custom domain setup:
 
 1. Add a DNS `CNAME` record: `gorix` → `gromosome.github.io`.
-2. Add a repository variable named `PAGES_CUSTOM_DOMAIN` with value `gorix.gromosome.com`.
-3. In GitHub repository settings, go to **Pages → Custom domain** and set `gorix.gromosome.com`.
+2. In GitHub repository settings, go to **Pages → Custom domain** and set `gorix.gromosome.com`.
+3. Keep `public/CNAME` committed so the custom domain is included in every deploy artifact.
 4. Enable **Enforce HTTPS** after GitHub finishes DNS verification.
 
-Without `PAGES_CUSTOM_DOMAIN`, the workflow builds for `https://<owner>.github.io/<repo>/`. With `PAGES_CUSTOM_DOMAIN`, it builds for `https://gorix.gromosome.com/`. A single static Next.js export cannot reliably serve both paths because asset URLs need one canonical base path.
+This deployment is built for `https://gorix.gromosome.com/`, not `https://gromosome.github.io/gorix-website/`. A single static Next.js export cannot reliably serve both paths because asset URLs need one canonical base path.
 
 If production submit/listing fails with `permission-denied`, deploy the checked-in Firestore rules:
 
