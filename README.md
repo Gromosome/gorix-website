@@ -27,11 +27,11 @@ Create a Firebase project and enable:
 2. **Authentication → Settings → Authorized domains**
 3. **Cloud Firestore**
 
-Add `localhost` and every production host under **Authorized domains**. For GitHub Pages, use the lowercase host:
+Add `localhost` and every production host under **Authorized domains**. For this site, use:
 
-- `gromosome.github.io`
+- `gorix.gromosome.com`
 
-Do not include the repository path (`/gorix-website`) in Firebase authorized domains.
+Do not include a protocol (`https://`) or path in Firebase authorized domains.
 
 In the GitHub OAuth app settings, add Firebase's GitHub callback URL from **Authentication → Sign-in method → GitHub**.
 
@@ -100,7 +100,14 @@ Set these GitHub Actions secrets before deploying the static site:
 
 The deploy workflow fails fast if any of these secrets are missing, because a static build embeds the public Firebase config at build time.
 
-If production sign-in still fails with `auth/unauthorized-domain`, the GitHub Actions secrets are present but Firebase Auth is rejecting the Pages host. Add `gromosome.github.io` in Firebase Authentication authorized domains and redeploy.
+If production sign-in still fails with `auth/unauthorized-domain`, the GitHub Actions secrets are present but Firebase Auth is rejecting the Pages host. Add `gorix.gromosome.com` in Firebase Authentication authorized domains and redeploy.
+
+For GitHub Pages custom domain setup:
+
+1. Add a DNS `CNAME` record: `gorix` → `gromosome.github.io`.
+2. In GitHub repository settings, go to **Pages → Custom domain** and set `gorix.gromosome.com`.
+3. Keep `public/CNAME` committed so the domain survives every deploy.
+4. Enable **Enforce HTTPS** after GitHub finishes DNS verification.
 
 If production submit/listing fails with `permission-denied`, deploy the checked-in Firestore rules:
 
